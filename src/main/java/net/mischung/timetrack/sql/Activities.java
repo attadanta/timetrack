@@ -1,6 +1,5 @@
 package net.mischung.timetrack.sql;
 
-import net.mischung.timetrack.Activity;
 import net.mischung.timetrack.SingleActivity;
 
 import java.io.File;
@@ -19,12 +18,12 @@ public class Activities {
         this.selector = selector;
     }
 
-    public List<Activity> all() throws SQLException {
+    public List<SingleActivity> all() throws SQLException {
         Connection connection = initializeConnection();
         Statement statement = connection.createStatement();
         ResultSet results = statement.executeQuery(selector.query());
 
-        List<Activity> activities = new LinkedList<Activity>();
+        List<SingleActivity> activities = new LinkedList<SingleActivity>();
         while (results.next()) {
             activities.add(toActivity(results));
         }
@@ -42,7 +41,7 @@ public class Activities {
         }
     }
 
-    private Activity toActivity(ResultSet results) throws SQLException {
+    private SingleActivity toActivity(ResultSet results) throws SQLException {
         ResultSchema schema = selector.getResultSchema();
         String activityName = results.getString(schema.getActivityNameColumn());
         Date startTime = results.getTimestamp(schema.getActivityStartTimeColumn());
@@ -50,7 +49,7 @@ public class Activities {
         String description = results.getString(schema.getActivityDescriptionColumn());
         String category = results.getString(schema.getActivityCategoryColumn());
 
-        Activity activity = new SingleActivity(activityName, startTime, endTime);
+        SingleActivity activity = new SingleActivity(activityName, startTime, endTime);
         activity.setDescription(description);
         activity.setCategory(category);
 

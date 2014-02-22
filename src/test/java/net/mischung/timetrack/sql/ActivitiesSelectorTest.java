@@ -1,4 +1,4 @@
-package net.mischung.timetrack;
+package net.mischung.timetrack.sql;
 
 import org.junit.Assert;
 import org.junit.Test;

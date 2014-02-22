@@ -1,4 +1,4 @@
-package net.mischung.timetrack;
+package net.mischung.timetrack.sql;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,6 +24,10 @@ public class ActivitiesSelector {
         this.date = date;
         this.ignoredCategories = new ArrayList<String>(ignoredCategories.size());
         this.ignoredCategories.addAll(ignoredCategories);
+    }
+
+    ResultSchema getResultSchema() {
+        return new ResultSchema();
     }
 
     String dateFragment(String attributeName) {

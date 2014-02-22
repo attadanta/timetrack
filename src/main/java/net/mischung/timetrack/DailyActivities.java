@@ -7,7 +7,7 @@ public class DailyActivities {
     private final Date date;
     private final List<SingleActivity> allActivities;
 
-    private List<SingleActivity> dailyActivities;
+    private List<DailyActivity> dailyActivities;
 
     public DailyActivities(Date date, List<SingleActivity> activities) {
         this.date = date;
@@ -15,25 +15,12 @@ public class DailyActivities {
     }
 
     public List<DailyActivity> getDailyActivities() {
-        List<DailyActivity> dailyActivities = new LinkedList<DailyActivity>();
-        LinkedList<SingleActivity> allActivities = new LinkedList<SingleActivity>(this.allActivities);
-
-        while (!allActivities.isEmpty()) {
-            Activity currentActivity = allActivities.poll();
-            DailyActivity dailyActivity = new DailyActivity(currentActivity);
-
-            for (Iterator<SingleActivity> iterator = allActivities.iterator(); iterator.hasNext();) {
-                SingleActivity otherActivity = iterator.next();
-                if (currentActivity.equals(otherActivity)) {
-                    dailyActivity.addActivity(otherActivity);
-                    iterator.remove();
-                }
-            }
-
-            dailyActivities.add(dailyActivity);
+        if (dailyActivities == null) {
+            dailyActivities = computeDailyActivities();
+            return dailyActivities;
+        } else {
+            return dailyActivities;
         }
-
-        return Collections.unmodifiableList(dailyActivities);
     }
 
     public long totalDuration() {
@@ -48,6 +35,28 @@ public class DailyActivities {
 
     public Date getDate() {
         return date;
+    }
+
+    private List<DailyActivity> computeDailyActivities() {
+        List<DailyActivity> dailyActivities = new LinkedList<DailyActivity>();
+        LinkedList<SingleActivity> allActivities = new LinkedList<SingleActivity>(this.allActivities);
+
+        while (!allActivities.isEmpty()) {
+            Activity currentActivity = allActivities.poll();
+            DailyActivity dailyActivity = new DailyActivity(currentActivity);
+
+            for (Iterator<SingleActivity> iterator = allActivities.iterator(); iterator.hasNext(); ) {
+                SingleActivity otherActivity = iterator.next();
+                if (currentActivity.equals(otherActivity)) {
+                    dailyActivity.addActivity(otherActivity);
+                    iterator.remove();
+                }
+            }
+
+            dailyActivities.add(dailyActivity);
+        }
+
+        return Collections.unmodifiableList(dailyActivities);
     }
 
 }

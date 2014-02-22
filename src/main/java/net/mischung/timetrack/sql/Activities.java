@@ -4,11 +4,16 @@ import net.mischung.timetrack.SingleActivity;
 
 import java.io.File;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Activities {
+
+    private static final DateFormat timestampFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private final File databaseFile;
     private final ActivitiesSelector selector;
@@ -25,8 +30,13 @@ public class Activities {
 
         List<SingleActivity> activities = new LinkedList<SingleActivity>();
         while (results.next()) {
-            activities.add(toActivity(results));
+            try {
+                activities.add(toActivity(results));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
+        connection.close();
 
         return activities;
     }
@@ -41,11 +51,11 @@ public class Activities {
         }
     }
 
-    private SingleActivity toActivity(ResultSet results) throws SQLException {
+    private SingleActivity toActivity(ResultSet results) throws SQLException, ParseException {
         ResultSchema schema = selector.getResultSchema();
         String activityName = results.getString(schema.getActivityNameColumn());
-        Date startTime = results.getTimestamp(schema.getActivityStartTimeColumn());
-        Date endTime = results.getTimestamp(schema.getActivityEndTimeColumn());
+        Date startTime = timestampFormat.parse(results.getString(schema.getActivityStartTimeColumn()));
+        Date endTime = timestampFormat.parse(results.getString(schema.getActivityEndTimeColumn()));
         String description = results.getString(schema.getActivityDescriptionColumn());
         String category = results.getString(schema.getActivityCategoryColumn());
 

@@ -31,8 +31,8 @@ public class ActivitiesSelector {
     }
 
     String dateFragment(String attributeName) {
-        return attributeName + " BETWEEN " + dateFormat.format(date()) +
-                " AND " + dateFormat.format(new Date(date().getTime() + dayLength()));
+        return attributeName + " BETWEEN " + quoteLiteral(dateFormat.format(date())) +
+                " AND " + quoteLiteral(dateFormat.format(new Date(date().getTime() + dayLength())));
     }
 
     String ignoredCategoriesFragment(String attributeName) {

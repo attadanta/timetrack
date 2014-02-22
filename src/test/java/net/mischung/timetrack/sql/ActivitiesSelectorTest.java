@@ -13,7 +13,7 @@ public class ActivitiesSelectorTest {
     @Test
     public void testDateFragment() {
         ActivitiesSelector selector = new ActivitiesSelector(today(), Collections.<String>emptyList());
-        Assert.assertEquals("date BETWEEN 1987-12-28 00:00:00 AND 1987-12-29 00:00:00", selector.dateFragment("date"));
+        Assert.assertEquals("date BETWEEN '1987-12-28 00:00:00' AND '1987-12-29 00:00:00'", selector.dateFragment("date"));
     }
 
     @Test

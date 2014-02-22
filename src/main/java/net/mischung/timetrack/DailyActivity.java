@@ -54,4 +54,14 @@ public class DailyActivity extends Activity {
         return activities.get(activities.size() - 1);
     }
 
+    @Override
+    public String toString() {
+        return "DailyActivity{" +
+                "name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", description='" + description + '\'' +
+                ", duration=" + getDuration() +
+                '}';
+    }
+
 }

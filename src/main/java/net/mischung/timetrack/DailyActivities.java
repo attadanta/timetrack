@@ -4,11 +4,13 @@ import java.util.*;
 
 public class DailyActivities {
 
-    private final Date day;
+    private final Date date;
     private final List<SingleActivity> allActivities;
 
-    public DailyActivities(Date day, List<SingleActivity> activities) {
-        this.day = day;
+    private List<SingleActivity> dailyActivities;
+
+    public DailyActivities(Date date, List<SingleActivity> activities) {
+        this.date = date;
         this.allActivities = activities;
     }
 
@@ -34,8 +36,18 @@ public class DailyActivities {
         return Collections.unmodifiableList(dailyActivities);
     }
 
-    public Date getDay() {
-        return day;
+    public long totalDuration() {
+        long duration = 0;
+
+        for (Activity activity : getDailyActivities()) {
+            duration = duration + activity.getDuration();
+        }
+
+        return duration;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
 }

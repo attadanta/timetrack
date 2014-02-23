@@ -14,7 +14,9 @@ public class ListAccessor<T> implements GuardedAccessor<T> {
 
     @Override
     public boolean canAccess() {
-        return list != null && index < list.size();
+        return list != null
+                && index < list.size()
+                && list.get(index) != null;
     }
 
     @Override

@@ -53,6 +53,7 @@ public class Activities {
 
     private SingleActivity toActivity(ResultSet results) throws SQLException, ParseException {
         ResultSchema schema = selector.getResultSchema();
+
         String activityName = results.getString(schema.getActivityNameColumn());
         Date startTime = timestampFormat.parse(results.getString(schema.getActivityStartTimeColumn()));
         Date endTime = timestampFormat.parse(results.getString(schema.getActivityEndTimeColumn()));

@@ -23,7 +23,7 @@ public class DailyActivity extends Activity {
         activities.addAll(tail);
     }
 
-    public boolean addActivity(SingleActivity activity) {
+    public boolean addActivity(Activity activity) {
         return activities.add(activity);
     }
 

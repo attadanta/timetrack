@@ -7,9 +7,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ListActivities {
 
@@ -17,16 +15,23 @@ public class ListActivities {
 
     private final File databaseFile;
     private final Date date;
+    private final Set<String> ignoredCategories;
 
-    ListActivities(File dbFile, Date date) {
+    ListActivities(File dbFile, Date date, Collection<String> ignoredCategories) {
         this.databaseFile = dbFile;
         this.date = date;
+
+        this.ignoredCategories = new HashSet<String>(ignoredCategories.size());
+        this.ignoredCategories.addAll(ignoredCategories);
     }
 
-    List<? extends Activity> activities() throws SQLException {
-        ActivitiesSelector selector = new ActivitiesSelector(date, Arrays.asList("Pause"));
-        List<SingleActivity> allActivities = new Activities(databaseFile, selector).all();
-        return new DailyActivities(date, allActivities).getDailyActivities();
+    List<? extends Activity> allActivities() throws SQLException {
+        ActivitiesSelector selector = new ActivitiesSelector(date, ignoredCategories);
+        return new Activities(databaseFile, selector).all();
+    }
+
+    List<? extends Activity> dailyActivites() throws SQLException {
+        return new DailyActivities(date, allActivities()).getDailyActivities();
     }
 
 }

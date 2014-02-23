@@ -1,6 +1,7 @@
 package net.mischung.timetrack;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
 
 public class TodaysActivities {
@@ -10,7 +11,7 @@ public class TodaysActivities {
 
         Date date = args.length > 1 ? ListActivities.dateFormat.parse(args[1]) : new Date();
 
-        for (Activity activity : new ListActivities(dbFile, date).activities()) {
+        for (Activity activity : new ListActivities(dbFile, date, Arrays.asList("Pause")).allActivities()) {
             System.out.println(activity);
         }
     }

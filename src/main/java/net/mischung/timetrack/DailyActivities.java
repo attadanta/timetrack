@@ -5,11 +5,11 @@ import java.util.*;
 public class DailyActivities {
 
     private final Date date;
-    private final List<SingleActivity> allActivities;
+    private final List<? extends Activity> allActivities;
 
     private List<DailyActivity> dailyActivities;
 
-    public DailyActivities(Date date, List<SingleActivity> activities) {
+    public DailyActivities(Date date, List<? extends Activity> activities) {
         this.date = date;
         this.allActivities = activities;
     }
@@ -39,14 +39,14 @@ public class DailyActivities {
 
     private List<DailyActivity> computeDailyActivities() {
         List<DailyActivity> dailyActivities = new LinkedList<DailyActivity>();
-        LinkedList<SingleActivity> allActivities = new LinkedList<SingleActivity>(this.allActivities);
+        LinkedList<Activity> allActivities = new LinkedList<Activity>(this.allActivities);
 
         while (!allActivities.isEmpty()) {
             Activity currentActivity = allActivities.poll();
             DailyActivity dailyActivity = new DailyActivity(currentActivity);
 
-            for (Iterator<SingleActivity> iterator = allActivities.iterator(); iterator.hasNext(); ) {
-                SingleActivity otherActivity = iterator.next();
+            for (Iterator<Activity> iterator = allActivities.iterator(); iterator.hasNext(); ) {
+                Activity otherActivity = iterator.next();
                 if (currentActivity.equals(otherActivity)) {
                     dailyActivity.addActivity(otherActivity);
                     iterator.remove();

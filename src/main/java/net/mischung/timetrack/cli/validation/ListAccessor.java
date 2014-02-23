@@ -20,7 +20,7 @@ public class ListAccessor<T> implements GuardedAccessor<T> {
     @Override
     public T get() {
         if (!canAccess()) {
-            throw new IllegalStateException("Cannot access property");
+            throw new IllegalStateException("Cannot access the " + index + ". list element. Call canAccess() beforehand.");
         }
         return list.get(index);
     }

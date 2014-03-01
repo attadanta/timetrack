@@ -38,6 +38,9 @@ public class ActivitiesSelectorTest {
     public void testEmptyWhereClause() {
         ActivitiesSelector emptyWhereClause = new ActivitiesSelector(null, Collections.<String>emptyList());
         Assert.assertEquals("", emptyWhereClause.whereClause());
+
+        emptyWhereClause = new ActivitiesSelector(null, null);
+        Assert.assertEquals("", emptyWhereClause.whereClause());
     }
 
     @Test

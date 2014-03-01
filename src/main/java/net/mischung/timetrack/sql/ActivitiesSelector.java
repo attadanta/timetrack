@@ -24,8 +24,9 @@ public class ActivitiesSelector {
 
     public ActivitiesSelector(Date date, Collection<String> ignoredCategories) {
         this.date = date;
-        this.ignoredCategories = new ArrayList<String>(ignoredCategories.size());
-        this.ignoredCategories.addAll(ignoredCategories);
+
+        this.ignoredCategories = new ArrayList<String>();
+        this.ignoredCategories.addAll(ignoredCategories != null ? ignoredCategories : Collections.<String>emptyList());
     }
 
     boolean isDateGiven() {

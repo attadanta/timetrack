@@ -44,6 +44,7 @@ public class DailyActivities {
         while (!allActivities.isEmpty()) {
             Activity currentActivity = allActivities.poll();
             DailyActivity dailyActivity = new DailyActivity(currentActivity);
+            dailyActivity.setDailyActivities(this);
 
             for (Iterator<Activity> iterator = allActivities.iterator(); iterator.hasNext(); ) {
                 Activity otherActivity = iterator.next();

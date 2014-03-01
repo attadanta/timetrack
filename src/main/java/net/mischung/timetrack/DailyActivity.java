@@ -8,6 +8,8 @@ public class DailyActivity extends Activity {
 
     private final List<Activity> activities;
 
+    private DailyActivities dailyActivities;
+
     public DailyActivity(Activity activity) {
         super(activity.getName());
 
@@ -44,6 +46,14 @@ public class DailyActivity extends Activity {
             duration = duration + activity.getDuration();
         }
         return duration;
+    }
+
+    public DailyActivities getDailyActivities() {
+        return dailyActivities;
+    }
+
+    public void setDailyActivities(DailyActivities dailyActivities) {
+        this.dailyActivities = dailyActivities;
     }
 
     public Activity firstActivity() {

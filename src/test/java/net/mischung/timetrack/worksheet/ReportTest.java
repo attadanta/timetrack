@@ -43,4 +43,5 @@ public class ReportTest {
         Workbook workbook = report.workbook();
         Assert.assertEquals(3, report.nextRow(workbook.getSheetAt(0)));
     }
+
 }

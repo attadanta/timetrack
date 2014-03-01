@@ -13,25 +13,37 @@ public class ActivitiesSelectorTest {
     @Test
     public void testDateFragment() {
         ActivitiesSelector selector = new ActivitiesSelector(today(), Collections.<String>emptyList());
-        Assert.assertEquals("date BETWEEN '1987-12-28 00:00:00' AND '1987-12-29 00:00:00'", selector.dateFragment("date"));
+        Assert.assertEquals("`date` BETWEEN '1987-12-28 00:00:00' AND '1987-12-29 00:00:00'", selector.betweenFragment("date"));
     }
 
     @Test
     public void testIgnoredCategoriesFragment() {
         ActivitiesSelector categories = new ActivitiesSelector(today(), Arrays.asList("pause", "leisure"));
-        Assert.assertEquals("category NOT IN('pause', 'leisure')", categories.ignoredCategoriesFragment("category"));
+        Assert.assertEquals("`category` NOT IN('pause', 'leisure')", categories.ignoredCategoriesFragment("category"));
     }
 
     @Test
     public void testSingleIgnoredCategory() {
         ActivitiesSelector categories = new ActivitiesSelector(today(), Arrays.asList("leisure"));
-        Assert.assertEquals("category NOT IN('leisure')", categories.ignoredCategoriesFragment("category"));
+        Assert.assertEquals("`category` NOT IN('leisure')", categories.ignoredCategoriesFragment("category"));
     }
 
     @Test
     public void testEmptyIgnoredCategoriesFragment() {
         ActivitiesSelector noCategories = new ActivitiesSelector(today(), Collections.<String>emptyList());
         Assert.assertEquals("", noCategories.ignoredCategoriesFragment("category"));
+    }
+
+    @Test
+    public void testEmptyWhereClause() {
+        ActivitiesSelector emptyWhereClause = new ActivitiesSelector(null, Collections.<String>emptyList());
+        Assert.assertEquals("", emptyWhereClause.whereClause());
+    }
+
+    @Test
+    public void testWhereFragmentWithNullDate() {
+        ActivitiesSelector nullDate = new ActivitiesSelector(null, Arrays.asList("leisure"));
+        Assert.assertEquals(" WHERE `category_name` NOT IN('leisure')", nullDate.whereClause());
     }
 
     /**

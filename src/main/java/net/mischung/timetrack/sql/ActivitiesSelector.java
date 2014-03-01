@@ -1,12 +1,14 @@
 package net.mischung.timetrack.sql;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import net.mischung.timetrack.sql.statements.AndFragment;
+import net.mischung.timetrack.sql.statements.BetweenFragment;
+import net.mischung.timetrack.sql.statements.NotInFragment;
+import net.mischung.timetrack.sql.statements.SimpleSQLFragment;
+
 import java.util.*;
 
 public class ActivitiesSelector {
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final String selectFragment =
             "SELECT facts.id, activity_name, category_name, description, start_time, end_time FROM\n" +
                     "(SELECT activities.id as activity_id,\n" +
@@ -26,28 +28,31 @@ public class ActivitiesSelector {
         this.ignoredCategories.addAll(ignoredCategories);
     }
 
+    boolean isDateGiven() {
+        return date != null;
+    }
+
+    boolean areIgnoredCasesGiven() {
+        return !ignoredCategories.isEmpty();
+    }
+
     ResultSchema getResultSchema() {
         return new ResultSchema();
     }
 
-    String dateFragment(String attributeName) {
-        return attributeName + " BETWEEN " + quoteLiteral(dateFormat.format(date())) +
-                " AND " + quoteLiteral(dateFormat.format(new Date(date().getTime() + dayLength())));
+    String betweenFragment(String attributeName) {
+        if (isDateGiven()) {
+            Date today = date();
+            Date tomorrow = new Date(date().getTime() + dayLength());
+
+            return new BetweenFragment(attributeName, today, tomorrow).toSQL();
+        } else {
+            return "";
+        }
     }
 
     String ignoredCategoriesFragment(String attributeName) {
-        if (ignoredCategories.isEmpty()) {
-            return "";
-        }
-        StringBuilder fragment = new StringBuilder();
-        fragment.append(attributeName).append(" NOT IN(");
-        for (int i = 0; i < ignoredCategories.size() - 1; i++) {
-            fragment.append(quoteLiteral(ignoredCategories.get(i)));
-            fragment.append(", ");
-        }
-        fragment.append(quoteLiteral(ignoredCategories.get(ignoredCategories.size() - 1)));
-        fragment.append(")");
-        return fragment.toString();
+        return new NotInFragment(attributeName, ignoredCategories).toSQL();
     }
 
     String selectFragment() {
@@ -55,12 +60,24 @@ public class ActivitiesSelector {
     }
 
     String query() {
-        return selectFragment() + " WHERE " + ignoredCategoriesFragment("category_name")
-                + " AND " + dateFragment("start_time") + " AND " + dateFragment("end_time");
+        return selectFragment() + whereClause();
     }
 
-    private String quoteLiteral(String literal) {
-        return "'" + literal + "'";
+    String whereClause() {
+        StringBuilder whereClause = new StringBuilder();
+
+        if (isDateGiven() || areIgnoredCasesGiven()) {
+            whereClause.append(" WHERE ");
+            whereClause.append(
+                    new AndFragment(
+                            new NotInFragment("category_name", ignoredCategories),
+                            new SimpleSQLFragment(betweenFragment("start_time")),
+                            new SimpleSQLFragment(betweenFragment("end_time"))
+                    ).toSQL()
+            );
+        }
+
+        return whereClause.toString();
     }
 
     private Date date() {
@@ -78,4 +95,5 @@ public class ActivitiesSelector {
     private long dayLength() {
         return 24 * 60 * 60 * 1000;
     }
+
 }

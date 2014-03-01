@@ -40,6 +40,7 @@ public class Arguments {
     }
 
     public Date getDate() {
+        guard();
         try {
             return dateFormat.parse(dateAccessor.get());
         } catch (ParseException e) {

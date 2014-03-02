@@ -17,7 +17,7 @@ public class ListActivities {
     private final Date date;
     private final Set<String> ignoredCategories;
 
-    ListActivities(File dbFile, Date date, Collection<String> ignoredCategories) {
+    public ListActivities(File dbFile, Date date, Collection<String> ignoredCategories) {
         this.databaseFile = dbFile;
         this.date = date;
 
@@ -30,8 +30,12 @@ public class ListActivities {
         return new Activities(databaseFile, selector).all();
     }
 
-    List<? extends Activity> dailyActivites() throws SQLException {
-        return new DailyActivities(date, allActivities()).getDailyActivities();
+    public DailyActivities dailyActivities() throws SQLException {
+        return new DailyActivities(date, allActivities());
+    }
+
+    public List<? extends Activity> collectDailyActivities() throws SQLException {
+        return dailyActivities().getDailyActivities();
     }
 
 }

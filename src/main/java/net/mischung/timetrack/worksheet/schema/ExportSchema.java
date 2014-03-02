@@ -26,7 +26,7 @@ public class ExportSchema {
 
     public void writeActivity(Row row, DailyActivity activity) {
         for (String output : outputs()) {
-            Cell cell = row.getCell(cellIndex(output));
+            Cell cell = row.createCell(cellIndex(output));
             Property property = resolveProperty(activity, propertyAt(output));
             ValueWriter<?> writer = valueWriter(activity, property);
             writer.setCellValue(cell);

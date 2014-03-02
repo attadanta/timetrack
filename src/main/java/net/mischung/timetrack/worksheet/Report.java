@@ -11,6 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -27,12 +28,15 @@ public class Report {
     }
 
     public void write(DailyActivities activities, ExportSchema schema) throws IOException {
-        Sheet sheet = workbook().getSheetAt(sheetIndex(activities));
+        Workbook workbook = workbook();
+        Sheet sheet = workbook.getSheetAt(sheetIndex(activities));
 
         for (DailyActivity activity : activities.getDailyActivities()) {
-            Row row = sheet.getRow(nextRow(sheet));
+            Row row = sheet.createRow(nextRow(sheet));
             schema.writeActivity(row, activity);
         }
+
+        workbook.write(new FileOutputStream(workbookFile));
     }
 
     int sheetIndex(DailyActivities activities) {

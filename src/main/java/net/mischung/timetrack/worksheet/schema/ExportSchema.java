@@ -5,6 +5,9 @@ import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class ExportSchema {
@@ -19,6 +22,12 @@ public class ExportSchema {
     }
 
     private final Properties schema;
+
+    public static ExportSchema fromFile(File file) throws IOException {
+        Properties schemaProperties = new Properties();
+        schemaProperties.load(new FileReader(file));
+        return new ExportSchema(schemaProperties);
+    }
 
     public ExportSchema(Properties properties) {
         this.schema = properties;

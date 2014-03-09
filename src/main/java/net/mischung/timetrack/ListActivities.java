@@ -5,13 +5,9 @@ import net.mischung.timetrack.sql.ActivitiesSelector;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ListActivities {
-
-    public static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private final File databaseFile;
     private final Date date;

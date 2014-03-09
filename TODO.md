@@ -1,4 +1,4 @@
-# TODO
+# Timetrack TODO
 
  * Friendlier error messages.
  * Formatted output of the command line executables.

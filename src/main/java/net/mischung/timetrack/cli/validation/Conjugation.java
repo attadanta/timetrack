@@ -15,12 +15,12 @@ public class Conjugation implements Constraint {
     }
 
     @Override
-    public boolean validate() {
+    public boolean validate(List<String> arguments) {
         boolean valid = true;
 
         for (Iterator<Constraint> iterator = constraints.iterator(); valid && iterator.hasNext(); ) {
             Constraint nextConstraint = iterator.next();
-            valid = valid && nextConstraint.validate();
+            valid = valid && nextConstraint.validate(arguments);
         }
 
         return valid;

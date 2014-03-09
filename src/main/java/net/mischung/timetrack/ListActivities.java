@@ -25,7 +25,7 @@ public class ListActivities {
         this.ignoredCategories.addAll(ignoredCategories);
     }
 
-    List<? extends Activity> allActivities() throws SQLException {
+    public List<? extends Activity> allActivities() throws SQLException {
         ActivitiesSelector selector = new ActivitiesSelector(date, ignoredCategories);
         return new Activities(databaseFile, selector).all();
     }

@@ -1,18 +1,20 @@
 package net.mischung.timetrack.cli.validation;
 
 import java.io.File;
+import java.util.List;
 
 public class PathExists implements Constraint {
 
-    private final GuardedAccessor<String> accessor;
+    private final ListAccessor<String> accessor;
 
-    public PathExists(GuardedAccessor<String> attributeAccessor) {
+    public PathExists(ListAccessor<String> attributeAccessor) {
         this.accessor = attributeAccessor;
     }
 
     @Override
-    public boolean validate() {
-        return accessor.canAccess() && new File(accessor.get()).exists();
+    public boolean validate(List<String> arguments) {
+        return accessor.canAccess(arguments)
+                && new File(accessor.get(arguments)).exists();
     }
 
 }

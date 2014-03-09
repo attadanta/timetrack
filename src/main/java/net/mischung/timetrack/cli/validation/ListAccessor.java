@@ -2,26 +2,22 @@ package net.mischung.timetrack.cli.validation;
 
 import java.util.List;
 
-public class ListAccessor<T> implements GuardedAccessor<T> {
+public class ListAccessor<T> {
 
     private final int index;
-    private final List<T> list;
 
-    public ListAccessor(List<T> list, int index) {
+    public ListAccessor(int index) {
         this.index = index;
-        this.list = list;
     }
 
-    @Override
-    public boolean canAccess() {
+    public boolean canAccess(List<T> list) {
         return list != null
                 && index < list.size()
                 && list.get(index) != null;
     }
 
-    @Override
-    public T get() {
-        if (!canAccess()) {
+    public T get(List<T> list) {
+        if (!canAccess(list)) {
             throw new IllegalStateException("Cannot access the " + index + ". list element. Call canAccess() beforehand.");
         }
         return list.get(index);

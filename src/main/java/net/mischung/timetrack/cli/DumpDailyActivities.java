@@ -1,6 +1,5 @@
 package net.mischung.timetrack.cli;
 
-
 import net.mischung.timetrack.ListActivities;
 import net.mischung.timetrack.cli.arguments.Arguments;
 import net.mischung.timetrack.worksheet.Report;
@@ -10,7 +9,7 @@ import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Properties;
 
-public class DumpActivities {
+public class DumpDailyActivities {
 
     public static void main(String[] args) throws Exception {
         Arguments arguments = new CLI().process(args);
@@ -28,17 +27,16 @@ public class DumpActivities {
         report.write(activitiesList.dailyActivities(), schema);
     }
 
-    public static final class CLI {
-
-        private final Arguments.Spec spec;
+    public static final class CLI extends CommandLineInterface {
 
         public CLI() {
-            this.spec = Arguments.specify()
+            super(Arguments.specify()
                     .file("database")
                     .file("schema")
                     .file("report")
                     .date("date")
-                    .restArguments("ignoredCategories");
+                    .restArguments("ignoredCategories")
+                    .makeSpec());
         }
 
         public Arguments process(String... args) {

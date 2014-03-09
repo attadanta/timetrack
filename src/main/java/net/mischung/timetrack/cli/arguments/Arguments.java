@@ -4,57 +4,12 @@ import net.mischung.timetrack.cli.validation.Conjugation;
 import net.mischung.timetrack.cli.validation.Constraint;
 
 import java.io.File;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 public class Arguments {
 
-    public static class Spec {
 
-        private final List<Argument> arguments;
-        private final Map<String, Integer> argMap;
-
-        private Spec() {
-            this.arguments = new LinkedList<Argument>();
-            this.argMap = new HashMap<String, Integer>();
-        }
-
-        public Spec file(String name) {
-            addArgument(new FileArgument(name, arguments.size()));
-            return this;
-        }
-
-        public Spec date(String name) {
-            addArgument(new DateArgument(name, arguments.size()));
-            return this;
-        }
-
-        public Spec restArguments(String name) {
-            addArgument(new RestArguments(name, arguments.size()));
-            return this;
-        }
-
-        public List<Argument> getArguments() {
-            return arguments;
-        }
-
-        public Argument getArgumentAt(int index) {
-            return arguments.get(index);
-        }
-
-        public int argumentsSize() {
-            return arguments.size();
-        }
-
-        private Argument getArgument(String name) {
-            return arguments.get(argMap.get(name));
-        }
-
-        private void addArgument(Argument argument) {
-            arguments.add(argument);
-            argMap.put(argument.getName(), argument.getIndex());
-        }
-
-    }
 
     private final Spec spec;
     private final List<String> arguments;
@@ -66,8 +21,8 @@ public class Arguments {
         this.valid = doValidate();
     }
 
-    public static Spec specify() {
-        return new Spec();
+    public static SpecFactory specify() {
+        return new SpecFactory();
     }
 
     public Date getDate(String name) {

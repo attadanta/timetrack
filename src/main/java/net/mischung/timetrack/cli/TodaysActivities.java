@@ -5,7 +5,6 @@ import net.mischung.timetrack.ListActivities;
 import net.mischung.timetrack.cli.arguments.Arguments;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -23,19 +22,18 @@ public class TodaysActivities {
         }
     }
 
-    private static class CLI {
+    private static class CLI extends CommandLineInterface {
 
-        private Arguments.Spec spec;
 
         private CLI() {
-            this.spec = Arguments.specify()
+            super(Arguments.specify()
                     .file("database")
                     .date("date")
-                    .restArguments("ignored_categories");
+                    .restArguments("ignored_categories")
+                    .makeSpec()
+            );
         }
 
-        public Arguments process(String... args) {
-            return new Arguments(spec, Arrays.asList(args));
-        }
     }
+
 }

@@ -84,16 +84,17 @@ public class DailyActivitiesArgumentsTest {
         return cal.getTime();
     }
 
-    private static class DailyActivitiesArguments {
+    private static class DailyActivitiesArguments extends CommandLineInterface {
 
-        private final Arguments.Spec spec;
         private final Arguments arguments;
 
         private DailyActivitiesArguments(String... args) {
-            this.spec = Arguments.specify()
+            super(Arguments.specify()
                     .file("database")
                     .date("date")
-                    .restArguments("ignored_categories");
+                    .restArguments("ignored_categories")
+                    .makeSpec()
+            );
             this.arguments = new Arguments(spec, Arrays.asList(args));
         }
 

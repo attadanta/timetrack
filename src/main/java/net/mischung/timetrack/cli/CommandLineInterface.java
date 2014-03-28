@@ -5,7 +5,7 @@ import net.mischung.timetrack.cli.arguments.Spec;
 
 import java.util.Arrays;
 
-abstract class CommandLineInterface {
+class CommandLineInterface {
 
     protected final Spec spec;
 

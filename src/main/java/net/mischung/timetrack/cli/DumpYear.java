@@ -86,7 +86,16 @@ public class DumpYear {
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void main(String[] args) throws IOException, SQLException {
-        Arguments arguments = new CLI().process(args);
+        CommandLineInterface cli = new CommandLineInterface(
+                Arguments.specify()
+                        .file("database")
+                        .file("schema")
+                        .file("report")
+                        .restArguments("ignored_categories")
+                        .makeSpec()
+        );
+
+        Arguments arguments = cli.process(args);
 
         ExportSchema schema = ExportSchema.fromFile(arguments.getFile("schema"));
 
@@ -100,20 +109,6 @@ public class DumpYear {
             );
             Report report = new Report(arguments.getFile("report"));
             report.write(listActivities.dailyActivities(), schema);
-        }
-
-    }
-
-    private static class CLI extends CommandLineInterface {
-
-        private CLI() {
-            super(Arguments.specify()
-                    .file("database")
-                    .file("schema")
-                    .file("report")
-                    .restArguments("ignored_categories")
-                    .makeSpec()
-            );
         }
 
     }
